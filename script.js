@@ -7,9 +7,23 @@ const startButton = document.querySelector('#startButton');
 // Initialize the timer value
 let timerValue = 20;
 
+// Add a variable to keep track of the countdown interval
+let countdownInterval = null;
+
 // Function to start the countdown
 function startCountdown() {
-    const countdownInterval = setInterval(function() {
+    // Reset timer value to 20 seconds
+    timerValue = 20;
+    timerDisplay.textContent = timerValue;
+    // Reset counter value to 0
+    counterValue = 0;
+    counterDisplay.textContent = counterValue;
+    // Clear any previous interval
+    if (countdownInterval !== null) {
+        clearInterval(countdownInterval);
+    }
+    // Start the countdown
+    countdownInterval = setInterval(function() {
         // Decrement the timer value
         timerValue--;
         // Update the timer display
@@ -18,6 +32,7 @@ function startCountdown() {
         // Stop the countdown when the timer reaches 0
         if (timerValue <= 0) {
             clearInterval(countdownInterval);
+            countdownInterval = null;
             timerDisplay.textContent = '0'; // Ensure the display shows 0
         }
     }, 1000);
@@ -32,6 +47,13 @@ function increaseCounter() {
     counterValue++;
     // Update the counter display
     counterDisplay.textContent = counterValue;
+    // Check if counter is 10 or more and timer is 10 seconds or less
+    if (counterValue >= 10 && timerValue >= 10 && timerValue <= 20) {
+        // Show confetti using the confetti library
+        if (typeof confetti === 'function') {
+            confetti();
+        }
+    }
 }
 
 // Add an event listener to the increment button to increase the counter when clicked
